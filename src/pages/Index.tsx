@@ -101,6 +101,7 @@ export default function Index() {
             </div>
             <div className="hidden md:flex space-x-8">
               <a href="#hero" className="text-charcoal-600 hover:text-coral-600 transition-colors">Главная</a>
+              <a href="#gallery" className="text-charcoal-600 hover:text-coral-600 transition-colors">Галерея</a>
               <a href="#services" className="text-charcoal-600 hover:text-coral-600 transition-colors">Услуги</a>
               <a href="#prices" className="text-charcoal-600 hover:text-coral-600 transition-colors">Цены</a>
               <a href="#booking" className="text-charcoal-600 hover:text-coral-600 transition-colors">Записаться</a>
@@ -161,6 +162,66 @@ export default function Index() {
                 className="relative rounded-2xl shadow-2xl w-full h-96 object-cover"
               />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Галерея */}
+      <section id="gallery" className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-charcoal-600 mb-4">Наши пациенты</h2>
+            <p className="text-xl text-charcoal-500">Счастливые питомцы после наших процедур</p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { src: '/img/7fd390ce-590b-4437-a39d-7f57dee318b7.jpg', alt: 'Золотистый ретривер после осмотра', title: 'Макс', description: 'Профилактический осмотр' },
+              { src: '/img/4dbd6946-bcd3-430b-9004-779f46aee0d4.jpg', alt: 'Рыжий кот после груминга', title: 'Рыжик', description: 'Груминг и стрижка' },
+              { src: '/img/09509f52-8142-4307-bb6b-6b0ba3e291cf.jpg', alt: 'Белая собачка на осмотре', title: 'Белла', description: 'Первичный прием' },
+              { src: '/img/519e86e3-ea21-4b6c-9baf-deb0e222fd86.jpg', alt: 'Кролик после лечения', title: 'Снежок', description: 'Лечение зубов' },
+              { src: '/img/af863400-987c-4766-bd2f-0983de8f9b2c.jpg', alt: 'Попугай на осмотре', title: 'Кеша', description: 'Обрезка когтей' },
+              { src: '/img/bbd334a9-5be1-40d4-8978-c606839cc1e7.jpg', alt: 'Черно-белый кот играет', title: 'Мурзик', description: 'После операции' }
+            ].map((pet, index) => (
+              <div
+                key={index}
+                className="group relative overflow-hidden rounded-2xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                onClick={() => {
+                  const modal = document.getElementById('gallery-modal');
+                  const modalImg = document.getElementById('modal-image') as HTMLImageElement;
+                  const modalTitle = document.getElementById('modal-title');
+                  const modalDesc = document.getElementById('modal-description');
+                  
+                  if (modal && modalImg && modalTitle && modalDesc) {
+                    modalImg.src = pet.src;
+                    modalImg.alt = pet.alt;
+                    modalTitle.textContent = pet.title;
+                    modalDesc.textContent = pet.description;
+                    modal.classList.remove('hidden');
+                  }
+                }}
+              >
+                <div className="aspect-square">
+                  <img 
+                    src={pet.src} 
+                    alt={pet.alt}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <h3 className="font-semibold text-lg">{pet.title}</h3>
+                    <p className="text-sm text-gray-200">{pet.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-charcoal-500 text-lg">
+              Каждый наш пациент получает индивидуальный подход и заботу 💝
+            </p>
           </div>
         </div>
       </section>
@@ -477,6 +538,7 @@ export default function Index() {
             <div>
               <h3 className="font-semibold mb-4">Быстрые ссылки</h3>
               <div className="space-y-2">
+                <a href="#gallery" className="text-gray-300 hover:text-coral-300 transition-colors block">Галерея</a>
                 <a href="#services" className="text-gray-300 hover:text-coral-300 transition-colors block">Услуги</a>
                 <a href="#prices" className="text-gray-300 hover:text-coral-300 transition-colors block">Цены</a>
                 <a href="#booking" className="text-gray-300 hover:text-coral-300 transition-colors block">Запись</a>
@@ -500,6 +562,79 @@ export default function Index() {
           </div>
         </div>
       </footer>
+
+      {/* Модальное окно для галереи */}
+      <div 
+        id="gallery-modal" 
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            document.getElementById('gallery-modal')?.classList.add('hidden');
+          }
+        }}
+      >
+        <div className="relative bg-white rounded-2xl max-w-4xl max-h-[90vh] overflow-hidden animate-scale-in">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute top-4 right-4 z-10 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-full w-10 h-10 p-0"
+            onClick={() => document.getElementById('gallery-modal')?.classList.add('hidden')}
+          >
+            <Icon name="X" size={20} />
+          </Button>
+          
+          <div className="grid lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <img 
+                id="modal-image"
+                src="" 
+                alt=""
+                className="w-full h-full object-cover max-h-[60vh] lg:max-h-[80vh]"
+              />
+            </div>
+            <div className="p-8 bg-gradient-to-br from-coral-50 to-turquoise-50">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-coral-500 to-turquoise-500 rounded-full flex items-center justify-center">
+                  <Icon name="Heart" size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 id="modal-title" className="text-2xl font-bold text-charcoal-600">Питомец</h3>
+                  <p id="modal-description" className="text-charcoal-500">Процедура</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="bg-white/60 rounded-lg p-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Icon name="CheckCircle" size={20} className="text-coral-500" />
+                    <span className="font-semibold text-charcoal-600">Успешное лечение</span>
+                  </div>
+                  <p className="text-sm text-charcoal-500">
+                    Наш пациент прошёл все необходимые процедуры и чувствует себя отлично!
+                  </p>
+                </div>
+                
+                <div className="bg-white/60 rounded-lg p-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Icon name="Star" size={20} className="text-turquoise-500" />
+                    <span className="font-semibold text-charcoal-600">Довольный владелец</span>
+                  </div>
+                  <p className="text-sm text-charcoal-500">
+                    Хозяева благодарят нас за профессиональную заботу о своём любимце.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-6">
+                <Button className="w-full bg-gradient-to-r from-coral-500 to-turquoise-500 hover:from-coral-600 hover:to-turquoise-600 text-white">
+                  <Icon name="Calendar" size={16} className="mr-2" />
+                  Записаться на приём
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
